@@ -1,4 +1,6 @@
+require("dotenv").config();
 import express from "express";
+import connectDB from "./schemas";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
@@ -16,6 +18,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+
+connectDB();
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
