@@ -10,7 +10,7 @@ const connectDB = async () => {
 
   try {
     const res = await mongoose.connect(dbUrl, {
-      dbName: "todo-app", // 실제로 데이터 저장할 db명
+      dbName: "todoApp", // 실제로 데이터 저장할 db명
       autoIndex: true,
     });
     console.log("mongodb 연결 성공");

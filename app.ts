@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 
 import usersRouter from "./routes/users";
+import todosRouter from "./routes/todos";
 import swaggerRouter from "./swagger";
 import cors from "cors";
 
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 app.use("/users", usersRouter);
+app.use("/todos", todosRouter);
 app.use(swaggerRouter);
 
 connectDB();

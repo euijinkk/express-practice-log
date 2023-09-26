@@ -21,7 +21,7 @@ router.get("/:id", async (req, res) => {
 
   const todo = await Todo.find({
     userId,
-    id: id,
+    _id: id,
     isDeleted: false,
   });
 
@@ -49,7 +49,7 @@ router.delete("/:id", async (req, res) => {
   const id = req.params.id;
 
   // Todo 를 삭제한다.
-  await Todo.findOneAndUpdate({ id, userId }, { isDeleted: true });
+  await Todo.findOneAndUpdate({ _id: id, userId }, { isDeleted: true });
 
   res.status(200).send({ message: "success" });
 });
