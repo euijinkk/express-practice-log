@@ -44,4 +44,34 @@ router.get("/signup", async (req, res) => {
   res.status(200).send(user);
 });
 
+router.get("login", async (req, res) => {
+  const body = req.body;
+
+  // validation
+  if (!body.email || !body.email.includes("@")) {
+    return res.status(400).send({ message: "유효한 이메일을 입력해주세요." });
+  }
+
+  if (!body.password) {
+    return res.status(400).send({ message: "비밀번호를 입력해주세요." });
+  }
+
+  // DB에 있는지 확인
+  const existingUser = await User.findOne({
+    email: body.email,
+    password: body.password,
+  });
+  if (existingUser == null) {
+    return res
+      .status(400)
+      .send({ message: "email 또는 password가 틀렸습니다." });
+  }
+
+  res.status(200).send({
+    name: existingUser.name,
+    email: existingUser.email,
+    age: existingUser.age,
+  });
+});
+
 export default router;
