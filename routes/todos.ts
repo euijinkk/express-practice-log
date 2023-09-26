@@ -14,6 +14,20 @@ router.get("/", async (req, res) => {
   res.status(200).send(todos);
 });
 
+router.get("/:id", async (req, res) => {
+  const body = req.body;
+  const userId = body.userId;
+  const id = req.params.id;
+
+  const todo = await Todo.find({
+    userId,
+    id: id,
+    isDeleted: false,
+  });
+
+  res.status(200).send(todo);
+});
+
 router.post("/", async (req, res) => {
   const body = req.body;
   // 유저를 찾는다
