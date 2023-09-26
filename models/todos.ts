@@ -24,5 +24,6 @@ const todosSchema: Schema = new Schema(
   },
   { timestamps: true }
 );
+
 const Todo = mongoose.model<ITodo>("Todo", todosSchema);
 export default Todo;

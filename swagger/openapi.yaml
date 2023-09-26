@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: User and Todo API
+  version: 1.0.0
+  description: An API for managing users and todos
+
+paths:
+  /users/signup:
+    post:
+      summary: Sign up a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+      responses:
+        200:
+          description: Successful signup
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Bad request
+
+  /users/login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLoginInput"
+      responses:
+        200:
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserLoginResponse"
+        400:
+          description: Bad request
+
+  /todos:
+    get:
+      summary: Retrieve all todos based on the userId
+      parameters:
+        - in: body
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The user ID
+      responses:
+        200:
+          description: List of todos for the specified user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Todo"
+        400:
+          description: Bad request
+        500:
+          description: Server error
+
+    post:
+      summary: Create a new todo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoInput"
+      responses:
+        200:
+          description: Successful todo creation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        400:
+          description: Bad request
+
+    delete:
+      summary: Soft delete a todo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                id:
+                  type: string
+      responses:
+        200:
+          description: Todo marked as deleted
+        400:
+          description: Bad request
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        age:
+          type: number
+        _id:
+          type: string
+      required:
+        - email
+        - password
+        - name
+        - age
+
+    UserInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        age:
+          type: number
+      required:
+        - email
+        - password
+        - name
+        - age
+
+    UserLoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    UserLoginResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        id:
+          type: string
+
+    Todo:
+      type: object
+      properties:
+        title:
+          type: string
+        isCompleted:
+          type: boolean
+          default: false
+        userId:
+          type: string
+        isDeleted:
+          type: boolean
+          default: false
+      required:
+        - title
+        - userId
+
+    TodoInput:
+      type: object
+      properties:
+        title:
+          type: string
+        userId:
+          type: string
+      required:
+        - title
+        - userId
