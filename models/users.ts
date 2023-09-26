@@ -7,7 +7,7 @@ interface IUser extends Document {
   age: number;
 }
 
-const userSchema: Schema = new Schema(
+const usersSchema: Schema = new Schema(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
@@ -17,5 +17,5 @@ const userSchema: Schema = new Schema(
   { timestamps: true }
 );
 // "User" -> "users" collection에 저장한다는 의미
-const User = mongoose.model<IUser>("User", userSchema);
+const User = mongoose.model<IUser>("User", usersSchema);
 export default User;

@@ -3,7 +3,7 @@ import User from "../models/users";
 
 const router = express.Router();
 
-router.get("/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
   const body = req.body;
 
   // validation
@@ -44,7 +44,7 @@ router.get("/signup", async (req, res) => {
   res.status(200).send(user);
 });
 
-router.get("login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const body = req.body;
 
   // validation
@@ -71,6 +71,7 @@ router.get("login", async (req, res) => {
     name: existingUser.name,
     email: existingUser.email,
     age: existingUser.age,
+    id: existingUser.id,
   });
 });
 
