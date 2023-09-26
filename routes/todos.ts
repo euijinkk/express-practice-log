@@ -43,10 +43,10 @@ router.post("/", async (req, res) => {
   res.status(200).send(newTodo);
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const body = req.body;
   const userId = body.userId;
-  const id = body.id;
+  const id = req.params.id;
 
   // Todo 를 삭제한다.
   await Todo.findOneAndUpdate({ id, userId }, { isDeleted: true });
