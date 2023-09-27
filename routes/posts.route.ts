@@ -79,9 +79,12 @@ router.put("/:id", async (req, res) => {
     return res.status(400).send({ message: "title, content를 채워주세요" });
   }
 
-  await Post.findOneAndUpdate({ _id: id, author: userId }, body);
+  const updatedPost = await Post.findOneAndUpdate(
+    { _id: id, author: userId },
+    body
+  );
 
-  res.status(200).send({ message: "success" });
+  res.status(200).send(updatedPost);
 });
 
 export default router;
