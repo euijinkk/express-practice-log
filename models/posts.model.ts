@@ -1,15 +1,17 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, PopulatedDoc, Schema } from "mongoose";
+import { IUser } from "./users.model";
 
-interface IPost extends Document {
+export interface IPost extends Document {
   title: string;
   isCompleted: boolean;
+  author: PopulatedDoc<IUser>;
 }
 
 const postsSchema: Schema = new Schema(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
-    userId: {
+    author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -22,5 +24,5 @@ const postsSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-const Post = mongoose.model<IPost>("Todo", postsSchema);
+const Post = mongoose.model<IPost>("Post", postsSchema);
 export default Post;

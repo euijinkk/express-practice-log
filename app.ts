@@ -7,6 +7,8 @@ import logger from "morgan";
 
 import usersRouter from "./routes/users.route";
 import todosRouter from "./routes/todos.route";
+import postsRouter from "./routes/posts.route";
+
 import swaggerRouter from "./swagger";
 import cors from "cors";
 
@@ -25,6 +27,7 @@ app.use(cors());
 
 app.use("/users", usersRouter);
 app.use("/todos", todosRouter);
+app.use("/posts", postsRouter);
 app.use(swaggerRouter);
 
 connectDB();
