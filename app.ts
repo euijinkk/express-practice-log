@@ -1,5 +1,5 @@
 require("dotenv").config();
-import express from "express";
+import express, { NextFunction, Request } from "express";
 import connectDB from "./schemas";
 import path from "path";
 import cookieParser from "cookie-parser";
@@ -11,6 +11,8 @@ import postsRouter from "./routes/posts.route";
 
 import swaggerRouter from "./swagger";
 import cors from "cors";
+import handleError from "./middlewares/handleError";
+import handleResponse from "./middlewares/handleResponse";
 
 const app = express();
 // 특정 도메인만 허용하려면 다음과 같이 설정합니다:
@@ -24,6 +26,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
+
+app.use(handleResponse);
+app.use(handleError);
 
 app.use("/users", usersRouter);
 app.use("/todos", todosRouter);
