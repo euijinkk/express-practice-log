@@ -57,10 +57,29 @@ router.delete("/:id", async (req, res) => {
 
   const post = await Post.findById(id);
   if (post && post.author._id.toString() !== userId) {
-    return res.status(401).send({ message: "권한이 없습니다." });
+    return res.status(401).send({ message: "삭제 권한이 없습니다." });
   }
 
   await Post.findOneAndUpdate({ _id: id, author: userId }, { isDeleted: true });
+
+  res.status(200).send({ message: "success" });
+});
+
+router.put("/:id", async (req, res) => {
+  const body = req.body;
+  const userId = body.userId;
+  const id = req.params.id;
+
+  const post = await Post.findById(id);
+  if (post && post.author._id.toString() !== userId) {
+    return res.status(401).send({ message: "수정 권한이 없습니다." });
+  }
+
+  if (body.title == null || body.content == null) {
+    return res.status(400).send({ message: "title, content를 채워주세요" });
+  }
+
+  await Post.findOneAndUpdate({ _id: id, author: userId }, body);
 
   res.status(200).send({ message: "success" });
 });
