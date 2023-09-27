@@ -5,8 +5,8 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 
-import usersRouter from "./routes/users";
-import todosRouter from "./routes/todos";
+import usersRouter from "./routes/users.route";
+import todosRouter from "./routes/todos.route";
 import swaggerRouter from "./swagger";
 import cors from "cors";
 
