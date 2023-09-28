@@ -34,6 +34,21 @@ const updatePostValidation = [
   },
 ];
 
+// 게시물 수정/삭제 권한 검사 미들웨어
+async function checkPermission(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const userId = req.body.userId;
+  const id = req.params.id;
+  const post = await Post.findById(id);
+  if (post && post.author._id.toString() !== userId) {
+    return res.error("권한이 없습니다.", 401);
+  }
+  next();
+}
+
 router.get("/", async (req, res) => {
   const authorId = req.query.authorId;
 
@@ -80,15 +95,10 @@ router.post("/", createPostValidation, async (req: Request, res: Response) => {
   res.success(newPost);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", checkPermission, async (req, res) => {
   const body = req.body;
   const userId = body.userId;
   const id = req.params.id;
-
-  const post = await Post.findById(id);
-  if (post && post.author._id.toString() !== userId) {
-    return res.error("삭제 권한이 없습니다.", 401);
-  }
 
   await Post.findOneAndUpdate({ _id: id, author: userId }, { isDeleted: true });
 
@@ -97,16 +107,12 @@ router.delete("/:id", async (req, res) => {
 
 router.put(
   "/:id",
+  checkPermission,
   updatePostValidation,
   async (req: Request, res: Response) => {
     const body = req.body;
     const userId = body.userId;
     const id = req.params.id;
-
-    const post = await Post.findById(id);
-    if (post && post.author._id.toString() !== userId) {
-      return res.error("수정 권한이 없습니다.", 401);
-    }
 
     const updatedPost = await Post.findOneAndUpdate(
       { _id: id, author: userId },

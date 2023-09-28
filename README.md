@@ -7,14 +7,14 @@
 - DB
   - mongoDB, mongoose
 - cors
-
-## 더 학습해볼 것
-
 - 미들웨어
   - 기본 미들웨어들
   - 커스텀 미들웨어
     - validation
     - check permission
+
+## 더 학습해볼 것
+
 - 인증/인가
   - jwt
 - 로그
