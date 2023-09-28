@@ -1,19 +1,24 @@
 import mongoose, { Document, PopulatedDoc, Schema } from "mongoose";
 import { IUser } from "./users.model";
+import { IPost } from "./posts.model";
 
-export interface IPost extends Document {
-  title: string;
+interface IComment extends Document {
   content: string;
+  post: PopulatedDoc<IPost>;
   author: PopulatedDoc<IUser>;
 }
 
-const postsSchema = new Schema(
+const commentsSchema = new Schema(
   {
-    title: { type: String, required: true },
     content: { type: String, required: true },
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+    post: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
       required: true,
     },
     isDeleted: {
@@ -24,5 +29,5 @@ const postsSchema = new Schema(
   { timestamps: true }
 );
 
-const Post = mongoose.model("Post", postsSchema);
-export default Post;
+const Comment = mongoose.model("Comment", commentsSchema);
+export default Comment;
