@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import Post from "../models/posts.model";
 import User from "../models/users.model";
 import { body, param, validationResult } from "express-validator";
@@ -7,17 +7,31 @@ const router = express.Router();
 
 // 게시물 생성 시의 유효성 검사 미들웨어
 const createPostValidation = [
-  body("title").trim().notEmpty().withMessage("제목을 입력하세요."),
-  body("content").trim().notEmpty().withMessage("내용을 입력하세요."),
-  body("userId").isMongoId().withMessage("올바른 사용자 ID가 필요합니다."),
+  body("title").trim().notEmpty(),
+  body("content").trim().notEmpty(),
+  body("userId").isMongoId(),
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.error("Invalid values", 400);
+    }
+    next();
+  },
 ];
 
 // 게시물 수정 시의 유효성 검사 미들웨어
 const updatePostValidation = [
-  param("id").isMongoId().withMessage("올바른 게시물 ID가 필요합니다."),
-  body("title").trim().notEmpty().withMessage("제목을 입력하세요."),
-  body("content").trim().notEmpty().withMessage("내용을 입력하세요."),
-  body("userId").isMongoId().withMessage("올바른 사용자 ID가 필요합니다."),
+  param("id").isMongoId(),
+  body("title").trim().notEmpty(),
+  body("content").trim().notEmpty(),
+  body("userId").isMongoId(),
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.error("Invalid values", 400);
+    }
+    next();
+  },
 ];
 
 router.get("/", async (req, res) => {
@@ -51,12 +65,6 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", createPostValidation, async (req: Request, res: Response) => {
-  // express-validator에서 유효성 검사 수행
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
   const body = req.body;
   const userId = body.userId;
 
@@ -91,11 +99,6 @@ router.put(
   "/:id",
   updatePostValidation,
   async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const body = req.body;
     const userId = body.userId;
     const id = req.params.id;
