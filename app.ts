@@ -3,7 +3,6 @@ import express from "express";
 import connectDB from "./schemas";
 import path from "path";
 import cookieParser from "cookie-parser";
-import logger from "morgan";
 
 import usersRouter from "./routes/users.route";
 import todosRouter from "./routes/todos.route";
@@ -13,6 +12,7 @@ import swaggerRouter from "./swagger";
 import cors from "cors";
 import handleError from "./middlewares/handleError";
 import handleResponse from "./middlewares/handleResponse";
+import morganMiddleware from "./logger/morgan";
 
 const app = express();
 // 특정 도메인만 허용하려면 다음과 같이 설정합니다:
@@ -20,7 +20,8 @@ const app = express();
 //   origin: 'https://example.com'
 // }));
 
-app.use(logger("dev"));
+app.use(morganMiddleware);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
