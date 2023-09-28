@@ -12,7 +12,8 @@ import swaggerRouter from "./swagger";
 import cors from "cors";
 import handleError from "./middlewares/handleError";
 import handleResponse from "./middlewares/handleResponse";
-import morganMiddleware from "./logger/morgan";
+import morganMiddleware from "./logger/morganMiddleware";
+import winstonMiddleware from "./logger/winstonMiddleware";
 
 const app = express();
 // 특정 도메인만 허용하려면 다음과 같이 설정합니다:
@@ -21,6 +22,7 @@ const app = express();
 // }));
 
 app.use(morganMiddleware);
+app.use(winstonMiddleware);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
