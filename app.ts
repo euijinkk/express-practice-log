@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import usersRouter from "./routes/users.route";
 import todosRouter from "./routes/todos.route";
 import postsRouter from "./routes/posts.route";
+import commentsRouter from "./routes/comments.route";
 
 import swaggerRouter from "./swagger";
 import cors from "cors";
@@ -36,6 +37,7 @@ app.use(handleError);
 app.use("/users", usersRouter);
 app.use("/todos", todosRouter);
 app.use("/posts", postsRouter);
+app.use("/comments", commentsRouter);
 app.use(swaggerRouter);
 
 connectDB();
