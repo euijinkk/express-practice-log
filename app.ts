@@ -1,5 +1,5 @@
 require("dotenv").config();
-import express, { NextFunction, Request } from "express";
+import express from "express";
 import connectDB from "./schemas";
 import path from "path";
 import cookieParser from "cookie-parser";

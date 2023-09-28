@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
   // 유저 정보를 기반으로, todos에서 긁어온다
   const todos = await Todo.find({ userId, isDeleted: false });
 
-  res.status(200).send(todos);
+  res.success(todos);
 });
 
 router.get("/:id", async (req, res) => {
@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
     isDeleted: false,
   });
 
-  res.status(200).send(todo);
+  res.success(todo);
 });
 
 router.post("/", async (req, res) => {
@@ -40,7 +40,7 @@ router.post("/", async (req, res) => {
   });
   newTodo.save();
 
-  res.status(200).send(newTodo);
+  res.success(newTodo);
 });
 
 router.delete("/:id", async (req, res) => {
@@ -51,7 +51,7 @@ router.delete("/:id", async (req, res) => {
   // Todo 를 삭제한다.
   await Todo.findOneAndUpdate({ _id: id, userId }, { isDeleted: true });
 
-  res.status(200).send({ message: "success" });
+  res.success(true);
 });
 
 export default router;

@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
   })
     .populate("author")
     .sort({ createdAt: -1 });
-  res.status(200).send(posts);
+  res.success(posts);
 });
 
 router.get("/:id", async (req, res) => {
@@ -47,7 +47,7 @@ router.get("/:id", async (req, res) => {
     isDeleted: false,
   }).populate("author");
 
-  res.status(200).send(post);
+  res.success(post);
 });
 
 router.post("/", createPostValidation, async (req: Request, res: Response) => {
@@ -69,7 +69,7 @@ router.post("/", createPostValidation, async (req: Request, res: Response) => {
   });
   newPost.save();
 
-  res.status(200).send(newPost);
+  res.success(newPost);
 });
 
 router.delete("/:id", async (req, res) => {
@@ -79,12 +79,12 @@ router.delete("/:id", async (req, res) => {
 
   const post = await Post.findById(id);
   if (post && post.author._id.toString() !== userId) {
-    return res.status(401).send({ message: "삭제 권한이 없습니다." });
+    return res.error("삭제 권한이 없습니다.", 401);
   }
 
   await Post.findOneAndUpdate({ _id: id, author: userId }, { isDeleted: true });
 
-  res.status(200).send({ message: "success" });
+  res.success(true);
 });
 
 router.put(
@@ -102,7 +102,7 @@ router.put(
 
     const post = await Post.findById(id);
     if (post && post.author._id.toString() !== userId) {
-      return res.status(401).send({ message: "수정 권한이 없습니다." });
+      return res.error("수정 권한이 없습니다.", 401);
     }
 
     const updatedPost = await Post.findOneAndUpdate(
@@ -110,7 +110,7 @@ router.put(
       body
     );
 
-    res.status(200).send(updatedPost);
+    res.success(updatedPost);
   }
 );
 
