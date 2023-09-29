@@ -52,13 +52,6 @@ async function checkPermission(
 router.get("/", async (req, res) => {
   const authorId = req.query.authorId;
 
-  if (authorId == null) {
-    const posts = await Post.find({ isDeleted: false })
-      .populate("author")
-      .sort({ createdAt: -1 });
-    return res.status(200).send(posts);
-  }
-
   const posts = await Post.find({
     author: authorId,
     isDeleted: false,
